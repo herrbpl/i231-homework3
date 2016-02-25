@@ -1,7 +1,6 @@
 import java.util.LinkedList;
 import java.util.List;
 
-import org.hamcrest.core.IsNull;
 
 public class DoubleStack {
 
@@ -49,37 +48,29 @@ public class DoubleStack {
 
 	public void op(String s) {
 		double d1, d2;
-		switch (s) {
-		case "-":
+		if (s.equals("-")) {
 			d2 = this.pop();
 			d1 = this.pop();
 			this.push(d1 - d2);
-			
-			break;
-		case "+":
+		} else if (s.equals("+")) {
+
 			d2 = this.pop();
 			d1 = this.pop();
 			this.push(d1 + d2);
-					
-			break;
-			
-		case "*":
+		} else if (s.equals("*")) {
 			d2 = this.pop();
 			d1 = this.pop();
 			this.push(d1 * d2);
-						
-			break;			
-		case "/":
+		} else if (s.equals("/")) {
 			d2 = this.pop();
 			d1 = this.pop();
 			this.push(d1 / d2);
-			
-			break;
-		default:
+		} else {
+
 			throw new IllegalArgumentException(String.format("Unknown operand %s", s));
-			
 		}
-		// TODO!!!
+
+	// TODO!!!
 	}
 
 	public double tos() {
@@ -116,29 +107,30 @@ public class DoubleStack {
 	public static double interpret(String pol) {
 		DoubleStack ds = new DoubleStack();
 		String[] ol = pol.split("\\s");
-		
+		//System.out.println("\""+pol+"\"");
 		double d ;
 		for (int i = 0; i < ol.length; i++) {
+			//System.out.printf("\"%s\"\n", ol[i]);
+			if (ol[i].equals("")) {				
+				
+			} else if (
+				ol[i].equals("-") || 
+				ol[i].equals("+") ||
+				ol[i].equals("*") ||
+				ol[i].equals("/") 
+					) {
+				ds.op(ol[i]);
+				
+			} else {
+				try {
+					d = Double.parseDouble(ol[i]);
+					ds.push(d);
+				} catch (NumberFormatException e ) {
+					throw e;
+				}
 			
-			switch (ol[i]) {
-				case "":
-					break;
-				case "-":
-				case "+":
-				case "*":
-				case "/":
-					ds.op(ol[i]);
-					break;
-				default:
-					try {
-						d = Double.parseDouble(ol[i]);
-						ds.push(d);
-					} catch (NumberFormatException e ) {
-						throw e;
-					}
-					break;
 			}
-			
+				
 			
 		}
 		d = ds.pop(); 
