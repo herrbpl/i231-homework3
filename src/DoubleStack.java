@@ -1,6 +1,8 @@
 import java.util.LinkedList;
 import java.util.List;
 
+import org.hamcrest.core.IsNull;
+
 public class DoubleStack {
 
 	private List<Double> data;
@@ -8,6 +10,8 @@ public class DoubleStack {
 
 	public static void main(String[] argum) {
 		// TODO!!! Your tests here!
+		DoubleStack ds = new DoubleStack();
+		ds.interpret("2 3. \t  * - s");
 	}
 
 	DoubleStack() {
@@ -110,7 +114,38 @@ public class DoubleStack {
 	}
 
 	public static double interpret(String pol) {
-		return 0.; // TODO!!! Your code here!
+		DoubleStack ds = new DoubleStack();
+		String[] ol = pol.split("\\s");
+		
+		double d ;
+		for (int i = 0; i < ol.length; i++) {
+			
+			switch (ol[i]) {
+				case "":
+					break;
+				case "-":
+				case "+":
+				case "*":
+				case "/":
+					ds.op(ol[i]);
+					break;
+				default:
+					try {
+						d = Double.parseDouble(ol[i]);
+						ds.push(d);
+					} catch (NumberFormatException e ) {
+						throw e;
+					}
+					break;
+			}
+			
+			
+		}
+		d = ds.pop(); 
+		if (!ds.stEmpty()) {
+			throw new RuntimeException("Too few operands!");
+		}
+		return d; // TODO!!! Your code here!
 	}
 
 }
