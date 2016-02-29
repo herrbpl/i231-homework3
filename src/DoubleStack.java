@@ -8,9 +8,44 @@ public class DoubleStack {
 	
 
 	public static void main(String[] argum) {
-		// TODO!!! Your tests here!
-		DoubleStack ds = new DoubleStack();
-		ds.interpret("2 3. \t  * - s");
+		double d;
+		if (argum.length > 0) {
+			if (argum[0].equals("-i")) {
+				System.out.println("Interactive mode. Enter empty string to quit");
+				String input = TextIO.getlnString();
+				while(!input.equals("")) {
+					
+					System.out.printf("Interpreting '%s' = ", input);
+					try {
+						d = DoubleStack.interpret(input);
+						System.out.println(d);
+					} catch (RuntimeException e) {
+						System.out.println(e.getMessage());
+					}
+					System.out.println("Interactive mode. Enter empty string to quit");
+					input = TextIO.getlnString();
+					
+				}
+				return;
+			} else if (argum[0].equals("-s")) {
+				// TODO!!! Your tests here!
+				
+				for (int i = 1; i < argum.length; i++) {
+					System.out.printf("Interpreting '%s' = ", argum[i]);
+					try {
+						d = DoubleStack.interpret(argum[i]);
+						System.out.println(d);
+					} catch (RuntimeException e) {
+						System.out.println(e.getMessage());
+					}			
+				}
+				return;
+			} 	
+		} else {
+			System.out.println("use -i for interactive mode");
+			System.out.println("use -s to interpret arguments");
+		}		
+		
 	}
 
 	DoubleStack() {
@@ -39,11 +74,11 @@ public class DoubleStack {
 	public double pop() {
 		if (data.size() <= 0) {
 			throw new IndexOutOfBoundsException("No data entered!");
-		}
-		if (data.size() > 0) {			
+		} else {
+					
 			return data.remove(data.size()-1);
 		} 
-		return 0.; // TODO!!! Your code here!
+		
 	} // pop
 
 	public void op(String s) {
@@ -76,11 +111,10 @@ public class DoubleStack {
 	public double tos() {
 		if (data.size() <= 0) {
 			throw new IndexOutOfBoundsException("No data entered!");
-		}
-		if (data.size() > 0) {			
+		} else {			
 			return data.get(data.size()-1);
 		} 
-		return 0.; // TODO!!! Your code here!
+		
 	}
 
 	@Override
