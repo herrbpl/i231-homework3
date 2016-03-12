@@ -83,6 +83,9 @@ public class DoubleStack {
 
 	public void op(String s) {
 		double d1, d2;
+		if (this.data.size() < 2) {
+			throw new IllegalArgumentException(String.format("At least two numbers needed for operand %s, %d provided", s, this.data.size()));
+		}
 		if (s.equals("-")) {
 			d2 = this.pop();
 			d1 = this.pop();
@@ -110,7 +113,7 @@ public class DoubleStack {
 
 	public double tos() {
 		if (data.size() <= 0) {
-			throw new IndexOutOfBoundsException("No data entered!");
+			throw new IndexOutOfBoundsException("Cannot retrieve top from empty stack!");
 		} else {			
 			return data.get(data.size()-1);
 		} 
@@ -142,25 +145,35 @@ public class DoubleStack {
 		DoubleStack ds = new DoubleStack();
 		String[] ol = pol.split("\\s");
 		//System.out.println("\""+pol+"\"");
-		double d ;
+		double d;
+		StringBuilder sb = new StringBuilder();
+		
 		for (int i = 0; i < ol.length; i++) {
 			//System.out.printf("\"%s\"\n", ol[i]);
 			if (ol[i].equals("")) {				
 				
-			} else if (
+			} else if (				
 				ol[i].equals("-") || 
 				ol[i].equals("+") ||
 				ol[i].equals("*") ||
 				ol[i].equals("/") 
 					) {
-				ds.op(ol[i]);
+				sb.append(ol[i]).append(" ");
+				try {
+					ds.op(ol[i]);
+				} catch (RuntimeException e) {
+					
+					throw new RuntimeException(String.format("Error occured:\n%s^ %s\n" , sb.toString(), e.getMessage()));
+				}
 				
 			} else {
+				sb.append(ol[i]).append(" ");
 				try {
 					d = Double.parseDouble(ol[i]);
 					ds.push(d);
 				} catch (NumberFormatException e ) {
-					throw e;
+					throw new RuntimeException(String.format("Error occured:\n%s^ Cannot transform '%s' to double.\n" , sb.toString(), ol[i]));
+
 				}
 			
 			}
@@ -169,7 +182,7 @@ public class DoubleStack {
 		}
 		d = ds.pop(); 
 		if (!ds.stEmpty()) {
-			throw new RuntimeException("Too few operands!");
+			throw new RuntimeException("Too few operands to calculate result!");
 		}
 		return d; // TODO!!! Your code here!
 	}
