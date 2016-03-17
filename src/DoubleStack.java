@@ -8,6 +8,7 @@ public class DoubleStack {
 	
 
 	public static void main(String[] argum) {
+		
 		double d;
 		if (argum.length > 0) {
 			if (argum[0].equals("-i")) {
@@ -44,7 +45,11 @@ public class DoubleStack {
 		} else {
 			System.out.println("use -i for interactive mode");
 			System.out.println("use -s to interpret arguments");
-		}		
+		}
+		
+				
+		
+		//System.out.println("Interactive / command line parser disabled for Moodle unit testing");
 		
 	}
 
